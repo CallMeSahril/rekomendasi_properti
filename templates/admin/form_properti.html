@@ -1,0 +1,148 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Form Properti{% endblock %}
+
+{% block content %}
+<div class="p-6 bg-white rounded shadow-md max-w-2xl mx-auto">
+  <h2 class="text-2xl font-bold mb-6 text-center">
+    {% if action == 'tambah' %}➕ Tambah{% else %}✏️ Edit{% endif %} Properti
+  </h2>
+
+  {% if data is mapping %}
+  {% set val = [
+  data['id'], data['nama_properti'], data['lokasi'], data['latitude'],
+  data['longitude'], data['harga'], data['tipe_id'], data['luas_tanah'],
+  data['luas_bangunan'], data['jumlah_kamar'], data['deskripsi'], data['image_url']
+  ] %}
+
+  {% else %}
+  {% set val = data if data else ['']*12 %}
+  {% endif %}
+
+
+  <form method="POST" enctype="multipart/form-data" class="space-y-4">
+
+    <!-- Nama Properti -->
+    <div>
+      <label class="block text-gray-700">Nama Properti</label>
+      <input name="nama_properti" value="{{ val[1] }}" class="w-full border rounded px-3 py-2" required>
+    </div>
+
+    <!-- Kota -->
+    <div>
+      <label class="block text-gray-700">Pilih Kota</label>
+      <select id="kotaDropdown" name="lokasi" class="w-full border rounded px-3 py-2" required>
+        <option value="">-- Pilih Kota --</option>
+        {% for city in cities %}
+        <option value="{{ city.nama_kota }}" data-lat="{{ city.latitude }}" data-lon="{{ city.longitude }}" {% if
+          val[2]==city.nama_kota %}selected{% endif %}>
+          {{ city.nama_kota }}
+        </option>
+        {% endfor %}
+      </select>
+
+    </div>
+
+    <!-- Latitude & Longitude (Hidden) -->
+    <input type="hidden" name="latitude" id="latitude" value="{{ val[3] }}">
+    <input type="hidden" name="longitude" id="longitude" value="{{ val[4] }}">
+
+    <!-- Harga dan Tipe -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-gray-700">Harga</label>
+        <input name="harga" value="{{ val[5] }}" class="w-full border rounded px-3 py-2" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Tipe Properti</label>
+        <select name="tipe_id" class="w-full border rounded px-3 py-2" required>
+          <option value="">-- Pilih Tipe --</option>
+          {% for tipe in types %}
+          <option value="{{ tipe.id }}" {% if val[6]|int==tipe.id %}selected{% endif %}>
+            {{ tipe.nama }}
+          </option>
+
+          {% endfor %}
+        </select>
+      </div>
+
+
+    </div>
+
+    <!-- Luas Tanah dan Luas Bangunan -->
+    <div class="grid grid-cols-2 gap-4">
+      <div>
+        <label class="block text-gray-700">Luas Tanah (m²)</label>
+        <input name="luas_tanah" value="{{ val[7] }}" class="w-full border rounded px-3 py-2" required>
+      </div>
+      <div>
+        <label class="block text-gray-700">Luas Bangunan (m²)</label>
+        <input name="luas_bangunan" value="{{ val[8] }}" class="w-full border rounded px-3 py-2" required>
+      </div>
+    </div>
+
+    <!-- Jumlah Kamar -->
+    <div>
+      <label class="block text-gray-700 mt-4">Jumlah Kamar</label>
+      <input name="jumlah_kamar" value="{{ val[9] }}" class="w-full border rounded px-3 py-2" required>
+    </div>
+
+    <!-- Deskripsi -->
+    <div>
+      <label class="block text-gray-700">Deskripsi</label>
+      <textarea name="deskripsi" class="w-full border rounded px-3 py-2" rows="3">{{ val[10] }}</textarea>
+    </div>
+
+    <!-- Gambar -->
+    <div>
+      <label class="block text-gray-700">Gambar Properti {% if val[11] %}(Saat ini: {{ val[11] }}){% endif %}</label>
+      <input type="file" name="gambar" accept=".jpg, .jpeg, .png" class="w-full">
+      {% if val[11] %}
+      <input type="hidden" name="gambar_lama" value="{{ val[11] }}">
+      {% endif %}
+    </div>
+
+    <!-- Tombol -->
+    <div class="flex justify-between items-center">
+      <a href="/admin/properti" class="text-gray-600 hover:underline">← Kembali</a>
+      <button type="submit" class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700">
+        Simpan
+      </button>
+    </div>
+  </form>
+</div>
+<script>
+  const kotaDropdown = document.getElementById('kotaDropdown');
+  const latitudeInput = document.getElementById('latitude');
+  const longitudeInput = document.getElementById('longitude');
+
+  function updateLatLon() {
+    const selected = kotaDropdown.options[kotaDropdown.selectedIndex];
+    latitudeInput.value = selected.getAttribute("data-lat") || "";
+    longitudeInput.value = selected.getAttribute("data-lon") || "";
+  }
+
+  kotaDropdown.addEventListener('change', updateLatLon);
+
+  // Jalankan saat halaman selesai dimuat
+  window.addEventListener('DOMContentLoaded', () => {
+    const selected = kotaDropdown.options[kotaDropdown.selectedIndex];
+    const lat = selected.getAttribute("data-lat");
+    const lon = selected.getAttribute("data-lon");
+
+    // Hanya update jika tidak sedang edit data (sudah ada val[3])
+    if (!latitudeInput.value || !longitudeInput.value) {
+      latitudeInput.value = lat || "";
+      longitudeInput.value = lon || "";
+    }
+  });
+
+  // Validasi submit form
+  document.querySelector('form').addEventListener('submit', function (e) {
+    if (!latitudeInput.value || !longitudeInput.value) {
+      e.preventDefault();
+      alert("Silakan pilih kota agar latitude dan longitude terisi.");
+    }
+  });
+</script>
+
+{% endblock %}

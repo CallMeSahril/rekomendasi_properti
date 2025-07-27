@@ -1,0 +1,121 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Hasil Rekomendasi Properti</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600;700&display=swap" rel="stylesheet">
+  <style>
+    body {
+      font-family: 'Inter', sans-serif;
+      background: linear-gradient(to right, #c2e9fb, #a1c4fd);
+      min-height: 100vh;
+    }
+
+    .card {
+      background-color: white;
+      border-radius: 1rem;
+      box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+      transition: transform 0.2s ease;
+    }
+
+    .card:hover {
+      transform: translateY(-5px);
+    }
+  </style>
+</head>
+
+<body class="py-10 px-4">
+  <div class="max-w-7xl mx-auto">
+    <h2 class="text-3xl font-bold text-center text-gray-800 mb-6">📊 Hasil Rekomendasi Properti</h2>
+
+    {% if pesan %}
+    <div
+      class="max-w-2xl mx-auto mb-6 px-4 py-3 bg-yellow-100 border-l-4 border-yellow-500 text-yellow-800 rounded shadow text-sm">
+      ⚠️ {{ pesan }}
+    </div>
+    {% endif %}
+
+    <div class="text-center mb-8">
+      <button onclick="goBack()"
+        class="bg-gray-300 hover:bg-gray-400 text-gray-800 text-sm px-4 py-2 rounded-lg transition">
+        🔙 Kembali ke Form Preferensi
+      </button>
+    </div>
+
+    {% set properti_terfilter = hasil | selectattr("skor_akhir", "defined") | selectattr("skor_akhir", ">", 0) | list %}
+
+    {% if properti_terfilter and properti_terfilter|length > 0 %}
+    <div class="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+      {% for p in properti_terfilter %}
+      <div class="card p-6">
+        <h3 class="text-xl font-semibold text-blue-700 mb-2">{{ p.nama }}</h3>
+        <p class="text-sm text-gray-600"><strong>📍 Lokasi:</strong> {{ p.lokasi }}</p>
+        <p class="text-sm text-gray-600"><strong>💰 Harga:</strong> Rp {{ "{:,.0f}".format(p.harga) }}</p>
+        <p class="text-sm text-gray-600"><strong>🏠 Tipe:</strong> {{ p.tipe }}</p>
+        <p class="text-sm text-gray-600"><strong>📐 Luas Bangunan:</strong> {{ p.luas_bangunan }} m²</p>
+        <p class="text-sm text-gray-600"><strong>🛏️ Kamar:</strong> {{ p.kamar }}</p>
+        <p class="text-sm text-gray-600 mb-4"><strong>⭐ Skor:</strong> {{ "%.3f"|format(p.skor_akhir) }}</p>
+        <button onclick="showDetail({{ loop.index0 }})"
+          class="bg-blue-600 text-white text-sm px-4 py-2 rounded-lg hover:bg-blue-700 transition">
+          🔍 Lihat Detail
+        </button>
+      </div>
+      {% endfor %}
+    </div>
+    {% else %}
+    <p class="text-center text-lg text-red-600">⚠️ Tidak ada properti yang sesuai dengan preferensi Anda.</p>
+    {% endif %}
+  </div>
+
+  <!-- Modal Detail -->
+  <div id="detailModal" class="fixed inset-0 bg-black bg-opacity-40 z-50 hidden justify-center items-center">
+    <div class="bg-white rounded-xl w-full max-w-lg p-6 relative shadow-lg">
+      <button onclick="closeModal()"
+        class="absolute top-3 right-4 text-gray-500 hover:text-red-500 text-2xl font-bold">×</button>
+      <h3 class="text-2xl font-bold text-blue-800 mb-3" id="modalTitle">Detail Properti</h3>
+      <div class="space-y-2 text-sm text-gray-700" id="modalContent"></div>
+    </div>
+  </div>
+
+  <script>
+    const dataProperti = {{ properti_terfilter | tojson | safe }};
+
+    function showDetail(index) {
+      const p = dataProperti[index];
+      const modal = document.getElementById('detailModal');
+      const content = document.getElementById('modalContent');
+      const title = document.getElementById('modalTitle');
+
+      title.textContent = p.nama;
+      content.innerHTML = `
+        <p><strong>📍 Lokasi:</strong> ${p.lokasi}</p>
+        <p><strong>💰 Harga:</strong> Rp ${parseInt(p.harga).toLocaleString("id-ID")}</p>
+        <p><strong>🏠 Tipe:</strong> ${p.tipe}</p>
+        <p><strong>📐 Luas Tanah:</strong> ${p.luas_tanah ?? '-'} m²</p>
+        <p><strong>📐 Luas Bangunan:</strong> ${p.luas_bangunan} m²</p>
+        <p><strong>🛏️ Kamar:</strong> ${p.kamar}</p>
+        <p><strong>📝 Deskripsi:</strong> ${p.deskripsi}</p>
+        <p><strong>📷 Gambar:</strong> ${p.image_url ? `<img src="${p.image_url}" class="mt-2 rounded-lg shadow w-full" />` : '<span class="text-red-500 italic">Belum tersedia</span>'}</p>
+        <p><strong>📅 Ditambahkan:</strong> ${p.created_at ?? '-'}</p>
+        <p><strong>⭐ Skor Akhir:</strong> ${parseFloat(p.skor_akhir).toFixed(3)}</p>
+      `;
+      modal.classList.remove('hidden');
+      modal.classList.add('flex');
+    }
+
+    function closeModal() {
+      const modal = document.getElementById('detailModal');
+      modal.classList.add('hidden');
+      modal.classList.remove('flex');
+    }
+
+    function goBack() {
+      window.location.href = "/";
+    }
+  </script>
+</body>
+
+</html>

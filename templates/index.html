@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Form Preferensi Deskriptif</title>
+  <script src="https://cdn.tailwindcss.com"></script>
+</head>
+
+<body class="bg-gradient-to-br from-blue-50 to-blue-100 min-h-screen flex flex-col">
+
+  <!-- Header -->
+  <header class="bg-blue-600 text-white py-10 shadow-lg relative">
+    <div class="container mx-auto text-center px-6 relative">
+      <!-- Login Icon -->
+      <div class="absolute top-4 right-4">
+        <a href="{{ url_for('auth_bp.login') }}"
+          class="flex items-center gap-2 text-white hover:text-gray-200 text-sm font-medium">
+          <i class="fas fa-sign-in-alt"></i> Login Admin
+        </a>
+      </div>
+
+      <h1 class="text-4xl font-bold mb-2">🏠 Sistem Rekomendasi Properti</h1>
+      <p class="text-lg max-w-2xl mx-auto">
+        Tulis preferensi properti Anda secara bebas! Sistem akan merekomendasikan properti berdasarkan deskripsi Anda.
+      </p>
+    </div>
+  </header>
+
+  <!-- Form -->
+  <main class="flex-grow flex items-center justify-center py-10">
+    <div class="bg-white shadow-xl rounded-xl p-8 w-full max-w-xl">
+      <h2 class="text-2xl font-semibold text-center text-blue-800 mb-6">📝 Preferensi Deskriptif Klien</h2>
+      <form action="/rekomendasi" method="POST" class="space-y-6">
+
+        <!-- Nama -->
+        <div>
+          <label for="nama" class="block text-sm font-medium text-gray-700 mb-1">Nama Anda</label>
+          <input type="text" name="nama" id="nama" required placeholder="Contoh: Budi Santoso"
+            class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400" />
+        </div>
+
+        <!-- Deskripsi Preferensi -->
+        <div>
+          <label for="user_text" class="block text-sm font-medium text-gray-700 mb-1">Deskripsi Preferensi
+            Properti</label>
+          <textarea name="user_text" id="user_text" rows="4" required
+            class="w-full rounded-lg border border-gray-300 px-4 py-2 focus:outline-none focus:ring-2 focus:ring-blue-400"
+            placeholder="Contoh: Saya ingin rumah minimalis di Bekasi Timur dengan 3 kamar tidur, dekat sekolah dan harga di bawah 1.5M."></textarea>
+        </div>
+
+        <!-- Submit -->
+        <div>
+          <button type="submit"
+            class="w-full bg-blue-600 hover:bg-blue-700 text-white font-semibold py-2 rounded-lg shadow transition duration-200">
+            🔍 Cari Rekomendasi
+          </button>
+        </div>
+
+      </form>
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="bg-blue-600 text-white text-center py-4 mt-10 shadow-inner">
+    <p class="text-sm">&copy; 2025 PT Pilar Property. All rights reserved.</p>
+  </footer>
+
+</body>
+
+</html>

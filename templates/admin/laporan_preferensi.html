@@ -1,0 +1,16 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Laporan Preferensi Klien{% endblock %}
+{% block content %}
+<div class="max-w-xl mx-auto py-10 px-6 bg-white rounded shadow border">
+  <h1 class="text-xl font-bold mb-6 text-center">👤 Laporan Preferensi Klien Terakhir</h1>
+  <div class="space-y-3 text-sm text-gray-700">
+    <p><strong>Nama:</strong> {{ preferensi.nama }}</p>
+    <p><strong>Kota:</strong> {{ preferensi.kota }}</p>
+    <p><strong>Tipe:</strong> {{ preferensi.tipe }}</p>
+    <p><strong>Harga:</strong> {{ preferensi.harga }}</p>
+    <p><strong>Luas:</strong> {{ preferensi.luas }}</p>
+    <p><strong>Kamar:</strong> {{ preferensi.kamar }}</p>
+    <p><strong>Tanggal Akses:</strong> {{ now().strftime('%d-%m-%Y %H:%M') }}</p>
+  </div>
+</div>
+{% endblock %}

@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="utf-8">
+    <title>Laporan Properti</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            font-size: 12px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #ccc;
+            padding: 8px;
+            text-align: left;
+        }
+
+        th {
+            background-color: #f0f0f0;
+        }
+
+        h2 {
+            text-align: center;
+            margin-top: 0;
+        }
+
+        .footer {
+            text-align: right;
+            margin-top: 50px;
+            font-style: italic;
+        }
+
+        .signature {
+            margin-top: 60px;
+            text-align: right;
+        }
+
+        .signature p {
+            margin-bottom: 70px;
+        }
+
+        .kop {
+            display: flex;
+            align-items: center;
+            border-bottom: 2px solid black;
+            padding-bottom: 10px;
+        }
+
+        .kop img {
+            height: 60px;
+            margin-right: 15px;
+        }
+
+        .kop .text {
+            text-align: left;
+        }
+
+        .kop .text h3 {
+            margin: 0;
+            font-size: 18px;
+        }
+
+        .kop .text p {
+            margin: 2px 0;
+            font-size: 12px;
+        }
+    </style>
+</head>
+
+<body>
+
+    <!-- KOP SURAT -->
+    <div class="kop">
+        <!-- <img src="https://via.placeholder.com/60" alt="Logo Perusahaan"> -->
+        <div class="text">
+            <h3>PT. Pillar Property Indonesia</h3>
+            <p>Kota Wisata Cibubur, Boston Square, Ruko Jl. Raya Kota Wisata No.7 RK.5, Ciangsana, Kec. Gn. Putri, Kabupaten Bogor, Jawa Barat 16968</p>
+            <p>Telepon: (021) 123-4567 | Email: info@pillarproperty.co.id</p>
+        </div>
+    </div>
+
+    <!-- Judul dan Waktu -->
+    <h2>📋 Laporan Daftar Properti</h2>
+    <p><strong>Tanggal Cetak:</strong> {{ now.strftime('%d %B %Y') }}</p>
+
+    <!-- Tabel Data -->
+    <table>
+        <thead>
+            <tr>
+                <th>No</th>
+                <th>Nama Properti</th>
+                <th>Lokasi</th>
+                <th>Harga</th>
+                <th>Tipe</th>
+                <th>Luas Tanah</th>
+                <th>Luas Bangunan</th>
+                <th>Jumlah Kamar</th>
+            </tr>
+        </thead>
+        <tbody>
+            {% for p in data %}
+            <tr>
+                <td>{{ loop.index }}</td>
+                <td>{{ p['nama_properti'] }}</td>
+                <td>{{ p['lokasi'] }}</td>
+                <td>
+                    {% if p['harga'] is not none %}
+                    Rp {{ "{:,.0f}".format(p['harga']) | replace(",", ".") }}
+                    {% else %}
+                    -
+                    {% endif %}
+                </td>
+                <td>{{ p['tipe'] or '-' }}</td>
+                <td>{{ p['luas_tanah'] }} m²</td>
+                <td>{{ p['luas_bangunan'] }} m²</td>
+                <td>{{ p['jumlah_kamar'] }}</td>
+            </tr>
+            {% endfor %}
+        </tbody>
+    </table>
+
+    <!-- Tanda Tangan -->
+    <div class="signature">
+        <p>Jakarta, {{ now.strftime('%d %B %Y') }}</p>
+        <strong>Marketing</strong><br>
+        <br><br><br>
+        <em>(...........................................)</em>
+    </div>
+
+    <!-- Footer -->
+    <div class="footer">
+        Dicetak otomatis oleh sistem rekomendasi properti
+    </div>
+</body>
+
+</html>

@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+  <meta charset="UTF-8">
+  <title>{% block title %}PT Pillar Property CBF{% endblock %}</title>
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <script src="https://cdn.tailwindcss.com"></script>
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body class="bg-gray-100 min-h-screen">
+
+  <!-- Mobile Navbar -->
+  <div class="md:hidden bg-blue-800 text-white flex justify-between items-center px-4 py-3">
+    <div class="text-lg font-bold">AMC Panel</div>
+    <button id="toggleSidebar" class="text-white focus:outline-none">
+      ☰
+    </button>
+  </div>
+
+  <div class="flex min-h-screen">
+    <!-- Sidebar -->
+    <aside id="sidebar"
+      class="bg-blue-800 text-white w-64 space-y-4 px-4 py-6 absolute md:relative md:translate-x-0 transform -translate-x-full md:block transition-transform duration-200 z-50">
+      <h2 class="text-2xl font-bold mb-6">PT Pillar Property CBF</h2>
+      <nav class="space-y-2">
+        <a href="/admin/dashboard" class="block py-2 px-4 rounded hover:bg-blue-700">📊 Dashboard</a>
+        <a href="/admin/properti" class="block py-2 px-4 rounded hover:bg-blue-700">📋 Daftar Listing</a>
+        <a href="/admin/properti/tambah" class="block py-2 px-4 rounded hover:bg-blue-700">➕ Tambah Listing</a>
+        <a href="/admin/penjelasan" class="block py-2 px-4 rounded hover:bg-blue-700">📘 Penjelasan Algoritma</a>
+        <a href="/admin/preferensi" class="block py-2 px-4 rounded hover:bg-blue-700">👤 Preferensi Klien</a>
+
+        <a href="{{ url_for('auth_bp.logout') }}"
+          class="block py-2 px-4 bg-gray-700 hover:bg-red-700 rounded text-center mt-6">
+          🔓 Logout
+        </a>
+      </nav>
+
+
+    </aside>
+
+    <!-- Main Content -->
+    <main class="flex-1 p-6 mt-16 md:mt-0 w-full">
+      {% block content %}
+      {% endblock %}
+    </main>
+  </div>
+
+  <!-- Script untuk toggle sidebar di mobile -->
+  <script>
+    const toggleBtn = document.getElementById('toggleSidebar');
+    const sidebar = document.getElementById('sidebar');
+
+    toggleBtn?.addEventListener('click', () => {
+      sidebar.classList.toggle('-translate-x-full');
+    });
+  </script>
+
+</body>
+
+</html>

@@ -1,0 +1,60 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Daftar Listing{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-4">📋 Daftar Listing</h2>
+<div class="mb-4 flex justify-end">
+  <a href="{{ url_for('admin_bp.cetak_laporan_properti') }}"
+    class="bg-blue-600 text-white px-4 py-2 rounded hover:bg-blue-700 transition duration-200" target="_blank">
+    🖨️ Cetak Laporan
+  </a>
+</div>
+<table class="min-w-full border border-gray-200 bg-white">
+  <thead class="bg-gray-100">
+    <tr>
+      <th class="py-2 px-4 border">No</th>
+      <th class="py-2 px-4 border">Nama Properti</th>
+      <th class="py-2 px-4 border">Lokasi</th>
+      <th class="py-2 px-4 border">Harga</th>
+      <th class="py-2 px-4 border">Tipe</th>
+      <th class="py-2 px-4 border">Luas Tanah</th>
+      <th class="py-2 px-4 border">Luas Bangunan</th>
+      <th class="py-2 px-4 border">Jumlah Kamar</th>
+      <th class="py-2 px-4 border">Gambar</th>
+      <th class="py-2 px-4 border">Aksi</th>
+    </tr>
+  </thead>
+  <tbody>
+    {% for p in data %}
+    <tr class="text-center">
+      <td class="py-2 px-4 border">{{ loop.index }}</td>
+      <td class="py-2 px-4 border">{{ p['nama_properti'] }}</td>
+      <td class="py-2 px-4 border">{{ p['lokasi'] }}</td>
+      <td class="py-2 px-4 border">
+        {% if p['harga'] is not none %}
+        Rp {{ "{:,.0f}".format(p['harga']) | replace(",", ".") }}
+        {% else %}
+        -
+        {% endif %}
+      </td>
+      <td class="py-2 px-4 border">{{ p['tipe'] or '-' }}</td>
+      <td class="py-2 px-4 border">{{ p['luas_tanah'] }} m²</td>
+      <td class="py-2 px-4 border">{{ p['luas_bangunan'] }} m²</td>
+      <td class="py-2 px-4 border">{{ p['jumlah_kamar'] }} kamar</td>
+      <td class="py-2 px-4 border">
+        {% if p['image_url'] %}
+        <img src="{{ p['image_url'] }}" class="w-16 h-12 object-cover rounded mx-auto" />
+        {% else %}
+        <span class="text-gray-400 italic">Belum ada</span>
+        {% endif %}
+      </td>
+      <td class="py-2 px-4 border">
+        <a href="/admin/properti/edit/{{ p['id'] }}" class="text-blue-600 hover:underline">Edit</a> |
+        <a href="/admin/properti/delete/{{ p['id'] }}" class="text-red-600 hover:underline"
+          onclick="return confirm('Yakin ingin menghapus properti ini?')">Hapus</a>
+      </td>
+    </tr>
+    {% endfor %}
+  </tbody>
+</table>
+{% endblock %}

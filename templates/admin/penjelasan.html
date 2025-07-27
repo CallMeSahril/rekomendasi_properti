@@ -1,0 +1,59 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Penjelasan Algoritma{% endblock %}
+
+{% block content %}
+<h2 class="text-2xl font-bold mb-6">📘 Penjelasan Algoritma Content-Based Filtering</h2>
+
+<div class="bg-white p-6 rounded shadow space-y-6 leading-relaxed text-gray-800 text-base">
+
+  <!-- Langkah 1 -->
+  <div>
+    <h3 class="font-semibold text-lg">✅ Langkah 1: Input Preferensi dalam Bentuk Teks</h3>
+    <p>Pada sistem ini, pengguna diminta mengisi deskripsi preferensi properti secara bebas melalui teks (contoh: "Rumah minimalis di Bekasi Timur, 3 kamar, harga 1.2M").</p>
+    <p>Input teks ini kemudian digunakan sebagai dasar untuk melakukan pencocokan dengan deskripsi properti dalam database.</p>
+    <pre class="bg-gray-100 p-3 rounded mt-3 text-sm">Contoh input pengguna:
+Saya ingin rumah minimalis di Bekasi Timur dengan 3 kamar tidur dan harga sekitar 1.2 Miliar.
+    </pre>
+  </div>
+
+  <!-- Langkah 2 -->
+  <div>
+    <h3 class="font-semibold text-lg">✅ Langkah 2: Ambil dan Gabungkan Deskripsi Properti</h3>
+    <p>Sistem mengambil seluruh data properti dari database dan menyusun ulang atribut-atribut properti (lokasi, harga, tipe, luas, kamar, dll) menjadi sebuah dokumen deskriptif tunggal.</p>
+    <p>Dokumen ini akan digunakan untuk dibandingkan dengan teks pengguna melalui teknik text matching.</p>
+    <pre class="bg-gray-100 p-3 rounded mt-2 text-sm">Contoh deskripsi properti:
+Rumah minimalis dengan carport dan taman depan di Bekasi Timur. Harga 1.150.000.000, luas tanah 120m², bangunan 90m², 3 kamar.
+    </pre>
+  </div>
+
+  <!-- Langkah 3 -->
+  <div>
+    <h3 class="font-semibold text-lg">✅ Langkah 3: Ubah Teks ke Bentuk Vektor (TF-IDF)</h3>
+    <p>Deskripsi pengguna dan properti diubah menjadi representasi vektor menggunakan metode TF-IDF (Term Frequency - Inverse Document Frequency).</p>
+    <p>Vektor TF-IDF mencerminkan pentingnya suatu kata dalam sebuah dokumen dibandingkan dengan seluruh dokumen lain.</p>
+  </div>
+
+  <!-- Langkah 4 -->
+  <div>
+    <h3 class="font-semibold text-lg">✅ Langkah 4: Hitung Cosine Similarity</h3>
+    <p>Kemiripan antara teks input pengguna dan setiap deskripsi properti dihitung menggunakan rumus Cosine Similarity:</p>
+    <pre class="bg-gray-100 p-3 rounded text-sm">
+CosSim(A, B) = (A ⋅ B) / (||A|| × ||B||)
+    </pre>
+    <p>Semakin besar nilai Cosine Similarity (mendekati 1), semakin tinggi kemiripan antara preferensi pengguna dengan deskripsi properti.</p>
+  </div>
+
+  <!-- Langkah 5 -->
+  <div>
+    <h3 class="font-semibold text-lg">✅ Langkah 5: Urutkan Berdasarkan Skor</h3>
+    <p>Properti yang memiliki nilai Cosine Similarity lebih tinggi akan dianggap lebih relevan dan ditampilkan terlebih dahulu.</p>
+    <p>Skor CosSim digunakan sebagai dasar pemeringkatan rekomendasi properti.</p>
+    <pre class="bg-gray-100 p-3 rounded mt-2 text-sm">Contoh hasil akhir:
+1. Green Hill Residence – Skor: 0.89
+2. Cendana Villa – Skor: 0.82
+3. Taman Gading – Skor: 0.75
+    </pre>
+  </div>
+
+</div>
+{% endblock %}

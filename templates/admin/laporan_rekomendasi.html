@@ -1,0 +1,41 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Laporan Rekomendasi Properti{% endblock %}
+{% block content %}
+<div class="max-w-6xl mx-auto py-10 px-6">
+    <h1 class="text-2xl font-bold mb-6">📦 Laporan Rekomendasi Properti</h1>
+    <div class="overflow-x-auto bg-white rounded shadow border p-4">
+        <table class="min-w-full text-sm border">
+            <thead class="bg-gray-100">
+                <tr>
+                    <th class="border px-3 py-2">#</th>
+                    <th class="border px-3 py-2">Nama</th>
+                    <th class="border px-3 py-2">Lokasi</th>
+                    <th class="border px-3 py-2">Harga</th>
+                    <th class="border px-3 py-2">Tipe</th>
+                    <th class="border px-3 py-2">Luas</th>
+                    <th class="border px-3 py-2">Kamar</th>
+                    <th class="border px-3 py-2">Skor</th>
+                </tr>
+            </thead>
+            <tbody>
+                {% for item in hasil %}
+                <tr>
+                    <td class="border px-3 py-2">{{ loop.index }}</td>
+                    <td class="border px-3 py-2">{{ item['nama'] }}</td>
+                    <td class="border px-3 py-2">{{ item['lokasi'] }}</td>
+                    <td class="border px-3 py-2">Rp {{ "{:,}".format(item['harga']).replace(",", ".") }}</td>
+                    <td class="border px-3 py-2">{{ item['tipe'] }}</td>
+                    <td class="border px-3 py-2">{{ item['luas'] }} m²</td>
+                    <td class="border px-3 py-2">{{ item['kamar'] }}</td>
+                    <td class="border px-3 py-2">{{ "%.4f"|format(item['skor']) }}</td>
+                </tr>
+                {% else %}
+                <tr>
+                    <td colspan="8" class="text-center py-4">Belum ada data rekomendasi.</td>
+                </tr>
+                {% endfor %}
+            </tbody>
+        </table>
+    </div>
+</div>
+{% endblock %}

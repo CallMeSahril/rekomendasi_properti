@@ -1,0 +1,142 @@
+{% extends "admin/base_admin.html" %}
+{% block title %}Dashboard{% endblock %}
+
+{% block content %}
+<div class="flex justify-end no-print mb-4">
+  <a href="{{ url_for('dashboard_bp.dashboard_pdf') }}" target="_blank"
+    class="no-print bg-green-600 hover:bg-green-700 text-white px-4 py-2 rounded shadow">
+    📥 Export PDF
+  </a>
+</div>
+<h2 class="text-2xl font-bold mb-6">📊 Dashboard Admin</h2>
+
+<!-- Ringkasan Utama -->
+<div class="grid grid-cols-1 md:grid-cols-4 gap-6 mb-8">
+  <!-- Total Properti -->
+  <div class="bg-white p-6 rounded shadow text-center">
+    <div class="text-3xl font-bold text-blue-600">{{ total }}</div>
+    <div class="text-gray-600">Total Properti</div>
+  </div>
+
+  {% if preferensi %}
+  <!-- Tipe Favorit -->
+  <div class="bg-white p-6 rounded shadow text-center">
+    <div class="text-xl font-semibold text-green-600">
+      🏠 {{ preferensi.get('tipe', '—') }}
+    </div>
+    <div class="text-gray-600 text-sm">Tipe Paling Dicari</div>
+  </div>
+
+  <!-- Rentang Harga -->
+  <div class="bg-white p-6 rounded shadow text-center">
+    <div class="text-xl font-semibold text-yellow-600">
+      💰 {{ preferensi.get('harga', '—') }}
+    </div>
+    <div class="text-gray-600 text-sm">Rentang Harga Favorit</div>
+  </div>
+
+  <!-- Luas Favorit -->
+  <div class="bg-white p-6 rounded shadow text-center">
+    <div class="text-xl font-semibold text-purple-600">
+      📏 {{ preferensi.get('luas', '—') }}
+    </div>
+    <div class="text-gray-600 text-sm">Ukuran Umum Dicari</div>
+  </div>
+  {% else %}
+  <!-- Jika Tidak Ada Data -->
+  <div class="col-span-3 bg-red-100 text-red-700 text-center py-6 rounded shadow">
+    ⚠️ Data preferensi klien belum tersedia.
+  </div>
+  {% endif %}
+</div>
+
+<!-- Informasi Klien Terakhir -->
+{% if preferensi %}
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+  <div class="bg-white p-6 rounded shadow text-center">
+    <div class="text-xl font-semibold text-pink-600">
+      🙍 {{ preferensi.get('nama', '—') }}
+    </div>
+    <div class="text-gray-600 text-sm">Klien Terakhir</div>
+  </div>
+
+  <div class="bg-white p-6 rounded shadow text-center">
+    <div class="text-xl font-semibold text-indigo-600">
+      📍 {{ preferensi.get('kota', '—') }}
+    </div>
+    <div class="text-gray-600 text-sm">Kota yang Dicari</div>
+  </div>
+</div>
+{% endif %}
+
+<!-- Statistik Tipe dan Lokasi -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6 mb-8">
+  <!-- Berdasarkan Tipe -->
+  <div class="bg-white p-6 rounded shadow">
+    <h3 class="font-semibold mb-3 text-gray-800">📦 Berdasarkan Tipe</h3>
+    <ul class="text-sm text-gray-700 space-y-1">
+      {% for tipe, jumlah in per_tipe %}
+      <li>🏘️ {{ tipe }}: <span class="font-bold">{{ jumlah }}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+
+  <!-- Berdasarkan Lokasi -->
+  <div class="bg-white p-6 rounded shadow">
+    <h3 class="font-semibold mb-3 text-gray-800">📍 Berdasarkan Lokasi</h3>
+    <ul class="text-sm text-gray-700 space-y-1">
+      {% for lokasi, jumlah in per_lokasi %}
+      <li>📍 {{ lokasi }}: <span class="font-bold">{{ jumlah }}</span></li>
+      {% endfor %}
+    </ul>
+  </div>
+</div>
+
+<!-- Grafik Statistik -->
+<div class="grid grid-cols-1 md:grid-cols-2 gap-6">
+  <!-- Grafik per Tipe -->
+  <div class="bg-white p-6 rounded shadow">
+    <h3 class="text-lg font-semibold text-gray-700 mb-4">📊 Grafik Properti per Tipe</h3>
+    <canvas id="chartTipe"></canvas>
+  </div>
+
+  <!-- Grafik per Lokasi -->
+  <div class="bg-white p-6 rounded shadow">
+    <h3 class="text-lg font-semibold text-gray-700 mb-4">📍 Grafik Lokasi Properti</h3>
+    <canvas id="chartLokasi"></canvas>
+  </div>
+</div>
+
+<!-- Script Chart.js -->
+<script>
+  const chartTipe = new Chart(document.getElementById('chartTipe'), {
+    type: 'bar',
+    data: {
+      labels: {{ tipe_labels | tojson }},
+  datasets: [{
+    label: 'Jumlah Properti',
+    data: {{ tipe_data | tojson }},
+    backgroundColor: 'rgba(59, 130, 246, 0.6)'
+      }]
+    },
+  options: {
+    responsive: true,
+      scales: {
+      y: { beginAtZero: true }
+    }
+  }
+  });
+
+  const chartLokasi = new Chart(document.getElementById('chartLokasi'), {
+    type: 'pie',
+    data: {
+      labels: {{ lokasi_labels | tojson }},
+  datasets: [{
+    data: {{ lokasi_data | tojson }},
+    backgroundColor: ['#60a5fa', '#f87171', '#34d399', '#facc15', '#a78bfa']
+      }]
+    },
+  options: { responsive: true }
+  });
+</script>
+{% endblock %}

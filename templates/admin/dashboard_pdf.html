@@ -1,0 +1,105 @@
+<!DOCTYPE html>
+<html lang="id">
+
+<head>
+    <meta charset="UTF-8">
+    <title>Laporan Dashboard</title>
+    <style>
+        body {
+            font-family: sans-serif;
+            font-size: 14px;
+        }
+
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-bottom: 20px;
+        }
+
+        th,
+        td {
+            border: 1px solid #000;
+            padding: 8px;
+            text-align: left;
+        }
+
+        h2 {
+            text-align: center;
+        }
+
+        .signature {
+            text-align: right;
+            margin-top: 40px;
+        }
+
+        .signature strong {
+            display: inline-block;
+            margin-top: 60px;
+        }
+    </style>
+</head>
+
+<body>
+    <h2>📊 Laporan Dashboard Properti</h2>
+
+    <h3>Ringkasan Utama</h3>
+    <table>
+        <tr>
+            <th>Total Properti</th>
+            <td>{{ total }}</td>
+        </tr>
+        <tr>
+            <th>Tipe Favorit</th>
+            <td>{{ preferensi.tipe }}</td>
+        </tr>
+        <tr>
+            <th>Harga Favorit</th>
+            <td>{{ preferensi.harga }}</td>
+        </tr>
+        <tr>
+            <th>Luas Favorit</th>
+            <td>{{ preferensi.luas }}</td>
+        </tr>
+        <tr>
+            <th>Kota Dicari</th>
+            <td>{{ preferensi.kota }}</td>
+        </tr>
+    </table>
+
+    <h3>Statistik Properti per Tipe</h3>
+    <table>
+        <tr>
+            <th>Tipe</th>
+            <th>Jumlah</th>
+        </tr>
+        {% for tipe, jumlah in per_tipe %}
+        <tr>
+            <td>{{ tipe }}</td>
+            <td>{{ jumlah }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <h3>Statistik Properti per Lokasi</h3>
+    <table>
+        <tr>
+            <th>Lokasi</th>
+            <th>Jumlah</th>
+        </tr>
+        {% for lokasi, jumlah in per_lokasi %}
+        <tr>
+            <td>{{ lokasi }}</td>
+            <td>{{ jumlah }}</td>
+        </tr>
+        {% endfor %}
+    </table>
+
+    <div class="signature">
+        Jakarta, {{ now.strftime('%d %B %Y') }}<br><br>
+        Hormat kami,<br>
+        <strong>(.................................)</strong><br>
+        Staff Marketing
+    </div>
+</body>
+
+</html>
