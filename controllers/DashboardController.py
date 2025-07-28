@@ -5,7 +5,7 @@ from models.PreferenceModel import get_last_preference
 import pdfkit
 
 # Konfigurasi pdfkit dengan wkhtmltopdf
-path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+path_to_wkhtmltopdf = r'/usr/bin/wkhtmltopdf'
 config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
 
 
