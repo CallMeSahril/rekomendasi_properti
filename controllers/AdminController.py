@@ -9,7 +9,7 @@ from models.AdminModel import get_all_properties, insert_property, get_property_
 import os
 from werkzeug.utils import secure_filename
 from models.AdminModel import get_all_cities
-from models.PropertyModel import get_all_property_types, fetch_all_properties
+from models.PropertyModel import get_all_property_types, fetch_all_properties, get_all_property_typesA
 import pdfkit
 import locale
 from datetime import datetime
@@ -137,8 +137,8 @@ def list_properti():
 
 def form_tambah_properti():
     cities = get_all_cities()
-    types = get_all_property_types()
-
+    types = get_all_property_typesA()
+    print(types)
     return render_template(
         'admin/form_properti.html',
         action='tambah',
