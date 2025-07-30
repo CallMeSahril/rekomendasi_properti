@@ -9,11 +9,11 @@ from models.AdminModel import get_all_properties, insert_property, get_property_
 import os
 from werkzeug.utils import secure_filename
 from models.AdminModel import get_all_cities
-from models.PropertyModel import get_all_property_types, fetch_all_properties
+from models.PropertyModel import get_all_property_types, fetch_all_properties, get_all_property_typesA
 import pdfkit
 import locale
 from datetime import datetime
-from models.PreferenceModel import get_last_preference, get_all_preferences
+from models.PreferenceModel import get_last_preference, get_all_preferences_A
 
 # Set locale ke Bahasa Indonesia (pastikan OS mendukung)
 try:
@@ -137,8 +137,8 @@ def list_properti():
 
 def form_tambah_properti():
     cities = get_all_cities()
-    types = get_all_property_types()
-
+    types = get_all_property_typesA()
+    print(types)
     return render_template(
         'admin/form_properti.html',
         action='tambah',
@@ -312,7 +312,7 @@ def dashboard():
     lokasi_data = list(lokasi_counter.values())
 
     # Preferensi (nama & user_text tetap ambil dari preferensi terakhir)
-    all_preferences = get_all_preferences()
+    all_preferences = get_all_preferences_A()
     if all_preferences:
         nama_terakhir = all_preferences[-1][0].title()
         user_text_terakhir = all_preferences[-1][1]
@@ -368,7 +368,7 @@ def dashboard_pdf():
 
     per_tipe = list(tipe_counter.items())
     per_lokasi = list(lokasi_counter.items())
-    all_preferences = get_all_preferences()
+    all_preferences = get_all_preferences_A()
 
     if all_preferences:
         nama_terakhir = all_preferences[-1][0].title()

@@ -1,7 +1,6 @@
 from flask_mysqldb import MySQL
 import numpy as np
 from MySQLdb.cursors import DictCursor
-
 mysql = MySQL()
 
 
@@ -36,6 +35,15 @@ def haversine(lat1, lon1, lat2, lon2):
     a = np.sin(dlat / 2)**2 + np.cos(lat1) * np.cos(lat2) * np.sin(dlon / 2)**2
     c = 2 * np.arcsin(np.sqrt(a))
     return R * c
+
+
+def get_all_property_typesA():
+    # Hasil fetch dalam bentuk dict
+    cursor = mysql.connection.cursor(DictCursor)
+    cursor.execute("SELECT id, nama FROM property_types")
+    result = cursor.fetchall()  # contoh: [{'id': 1, 'nama': 'Rumah'}, ...]
+    cursor.close()
+    return result
 
 
 def get_all_property_types():
