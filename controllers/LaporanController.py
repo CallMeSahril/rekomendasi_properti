@@ -7,6 +7,17 @@ from models.AdminModel import (
     get_properties_by_location
 )
 from models.PreferenceModel import get_last_preference
+import locale
+from datetime import datetime
+
+# Set locale ke Bahasa Indonesia (pastikan OS mendukung)
+try:
+    locale.setlocale(locale.LC_TIME, 'id_ID.UTF-8')  # Linux/Mac
+except locale.Error:
+    locale.setlocale(locale.LC_TIME, 'ind')  # Windows fallback
+
+now = datetime.now()
+formatted_date = now.strftime('%d %B %Y')  # Contoh: 30 Juli 2025
 
 # MENU UTAMA LAPORAN
 

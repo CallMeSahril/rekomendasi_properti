@@ -4,6 +4,17 @@ from tabulate import tabulate
 import re
 
 # Fungsi normalisasi teks harga dari input seperti "1,5 miliar", "800jt", dll
+import locale
+from datetime import datetime
+
+# Set locale ke Bahasa Indonesia (pastikan OS mendukung)
+try:
+    locale.setlocale(locale.LC_TIME, 'id_ID.UTF-8')  # Linux/Mac
+except locale.Error:
+    locale.setlocale(locale.LC_TIME, 'ind')  # Windows fallback
+
+now = datetime.now()
+formatted_date = now.strftime('%d %B %Y')  # Contoh: 30 Juli 2025
 
 
 def normalisasi_harga(text):

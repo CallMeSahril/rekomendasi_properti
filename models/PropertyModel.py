@@ -39,8 +39,8 @@ def haversine(lat1, lon1, lat2, lon2):
 
 
 def get_all_property_types():
-    cur = mysql.connection.cursor(DictCursor)
-    cur.execute("SELECT id, nama FROM property_types ORDER BY nama ASC")
-    result = cur.fetchall()
-    cur.close()
+    cursor = mysql.connection.cursor()
+    cursor.execute("SELECT nama FROM property_types")
+    result = [row[0] for row in cursor.fetchall()]  # ['Rumah', 'Tanah', ...]
+    cursor.close()
     return result
