@@ -1,5 +1,5 @@
 import locale
-from models.PreferenceModel import get_all_preferences
+from models.PreferenceModel import get_all_preferences_A
 from models.PropertyModel import get_all_property_types, fetch_all_properties
 from models.AdminModel import (
     get_total_properties,
@@ -138,7 +138,7 @@ def dashboard():
     lokasi_data = list(lokasi_counter.values())
 
     # Preferensi (nama & user_text tetap ambil dari preferensi terakhir)
-    all_preferences = get_all_preferences()
+    all_preferences = get_all_preferences_A()
     if all_preferences:
         nama_terakhir = all_preferences[-1][0].title()
         user_text_terakhir = all_preferences[-1][1]
@@ -194,7 +194,7 @@ def dashboard_pdf():
 
     per_tipe = list(tipe_counter.items())
     per_lokasi = list(lokasi_counter.items())
-    all_preferences = get_all_preferences()
+    all_preferences = get_all_preferences_A()
 
     if all_preferences:
         nama_terakhir = all_preferences[-1][0].title()
