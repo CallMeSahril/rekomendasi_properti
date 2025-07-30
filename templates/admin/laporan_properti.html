@@ -39,12 +39,25 @@
         }
 
         .signature {
-            margin-top: 60px;
             text-align: right;
+            margin-top: 50px;
         }
 
-        .signature p {
-            margin-bottom: 70px;
+        .signature-box {
+            display: inline-block;
+            width: 200px;
+            height: 80px;
+            /* border-bottom: 2px solid #000; */
+            margin-bottom: 10px;
+        }
+
+        .signature-name {
+            font-family: 'Brush Script MT', cursive;
+            font-size: 32px;
+            color: #444;
+            position: relative;
+            top: -60px;
+            left: 20px;
         }
 
         .kop {
@@ -128,17 +141,13 @@
         </tbody>
     </table>
 
-    <!-- Tanda Tangan -->
     <div class="signature">
-        <p>Jakarta, {{ now.strftime('%d %B %Y') }}</p>
-        <strong>Marketing</strong><br>
-        <br><br><br>
-        <em>(...........................................)</em>
-    </div>
-
-    <!-- Footer -->
-    <div class="footer">
-        Dicetak otomatis oleh sistem rekomendasi properti
+        Jakarta, {{ now.strftime('%d %B %Y') }}<br><br>
+        Hormat kami,<br><br>
+        <div class="signature-box"></div>
+        <div class="signature-name">Nana Alvian</div><br><br>
+        <strong>Nana Alvian</strong><br>
+        Staff Marketing
     </div>
 </body>
 
