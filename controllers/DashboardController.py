@@ -101,7 +101,7 @@ def extract_summary(preference_rows):
 
 
 # 📌 Konfigurasi wkhtmltopdf
-path_to_wkhtmltopdf = r'C:\Program Files\wkhtmltopdf\bin\wkhtmltopdf.exe'
+path_to_wkhtmltopdf = r'/usr/bin/wkhtmltopdf'
 config = pdfkit.configuration(wkhtmltopdf=path_to_wkhtmltopdf)
 
 # 📋 Dashboard Web View
