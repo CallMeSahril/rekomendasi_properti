@@ -9,10 +9,12 @@ from datetime import datetime
 
 # Set locale ke Bahasa Indonesia (pastikan OS mendukung)
 try:
-    locale.setlocale(locale.LC_TIME, 'id_ID.UTF-8')  # Linux/Mac
+    locale.setlocale(locale.LC_TIME, 'id_ID.UTF-8')
 except locale.Error:
-    locale.setlocale(locale.LC_TIME, 'ind')  # Windows fallback
-
+    try:
+        locale.setlocale(locale.LC_TIME, 'id_ID.utf8')
+    except locale.Error:
+        locale.setlocale(locale.LC_TIME, '')  # Use default system locale
 now = datetime.now()
 formatted_date = now.strftime('%d %B %Y')  # Contoh: 30 Juli 2025
 
