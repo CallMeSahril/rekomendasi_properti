@@ -14,7 +14,13 @@ except locale.Error:
     try:
         locale.setlocale(locale.LC_TIME, 'id_ID.utf8')
     except locale.Error:
-        locale.setlocale(locale.LC_TIME, '')  # Use default system locale
+        try:
+            # Windows fallback
+            locale.setlocale(locale.LC_TIME, 'Indonesian_Indonesia.1252')
+        except locale.Error:
+            print("⚠️ Locale Indonesia tidak tersedia, pakai default")
+            locale.setlocale(locale.LC_TIME, '')  # Default system locale
+ # Use default system locale
 now = datetime.now()
 formatted_date = now.strftime('%d %B %Y')  # Contoh: 30 Juli 2025
 

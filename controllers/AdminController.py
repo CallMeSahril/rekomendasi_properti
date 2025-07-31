@@ -22,7 +22,12 @@ except locale.Error:
     try:
         locale.setlocale(locale.LC_TIME, 'id_ID.utf8')
     except locale.Error:
-        locale.setlocale(locale.LC_TIME, '')  # Use default system locale
+        try:
+            locale.setlocale(locale.LC_TIME, 'Indonesian_Indonesia.1252')  # Windows fallback
+        except locale.Error:
+            print("⚠️ Locale Indonesia tidak tersedia, pakai default")
+            locale.setlocale(locale.LC_TIME, '')  # Default system locale
+ # Use default system locale
 now = datetime.now()
 formatted_date = now.strftime('%d %B %Y')  # Contoh: 30 Juli 2025
 
@@ -35,6 +40,14 @@ ALLOWED_EXTENSIONS = {'jpg', 'jpeg', 'png'}
 
 
 def parse_user_text(user_text):
+    if not user_text:  # Bisa cek None atau string kosong
+        return {
+            "tipe": "—",
+            "harga": "—",
+            "luas": "—",
+            "lokasi": "—"
+        }
+
     user_text = user_text.lower()
     tipe_list = [tipe.lower() for tipe in get_all_property_types()]
     lokasi_list = ['jakarta timur', 'jakarta selatan',
